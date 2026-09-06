@@ -1,0 +1,33 @@
+name: Validate APK
+
+on:
+  push:
+    paths:
+      - 'scripts/**'
+      - 'localization/**'
+      - '.github/workflows/validate.yml'
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'localization/**'
+      - '.github/workflows/validate.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Python scripts
+        run: |
+          python3 -m py_compile scripts/patch_dex_strings.py scripts/patch_strings.py scripts/validate_apk.py
+          test -s localization/pt-BR.csv
+          test -s scripts/patch_dex_strings.py
+          test -s scripts/validate_apk.py
+      - name: Verify repository does not contain APK artifacts
+        run: |
+          if find . -type f \( -name '*.apk' -o -name '*.aab' \) -print -quit | grep -q .; then
+            echo 'APK/AAB artifacts must not be committed to this repository.'
+            exit 1
+          fi
+          echo 'No APK/AAB artifacts found.'
