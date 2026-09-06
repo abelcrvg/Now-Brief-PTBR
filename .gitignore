@@ -1,0 +1,27 @@
+# Build outputs
+build/
+out/
+.apktool/
+
+# Decompiled/generated files
+smali*/
+smali_classes*/
+original/
+decompiled/
+
+# Local APKs / signing material
+*.apk
+*.aab
+*.apks
+*.keystore
+*.jks
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Temporary files
+*.log
+*.tmp
